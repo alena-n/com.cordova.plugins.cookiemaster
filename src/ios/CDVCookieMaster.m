@@ -42,6 +42,35 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+ - (void)getCookieValueByDomainPath:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    NSString* urlDomain = [command.arguments objectAtIndex:0];
+    NSString* urlPath = [command.arguments objectAtIndex:1];
+    __block NSString* cookieName = [command.arguments objectAtIndex:2];
+    
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray* cookies = [storage cookies];
+    __block NSString *cookieValue;
+
+    [cookies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSHTTPCookie *cookie = obj;
+
+        if([cookie.name isEqualToString:cookieName] && [cookie.domain isEqualToString:urlDomain] && [cookie.path isEqualToString:urlPath])
+        {
+            cookieValue = cookie.value;
+            *stop = YES;
+        }
+    }];
+    if (cookieValue != nil) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"cookieValue":cookieValue}];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No cookie found"];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
  - (void)setCookieValue:(CDVInvokedUrlCommand*)command
 {
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];

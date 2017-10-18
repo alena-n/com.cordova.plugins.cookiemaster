@@ -7,6 +7,13 @@ var cookieMaster = {
                     [url, cookieName]
         );
     },
+    getCookieByDomainPath: function(domain, path, cookieName, successCallback, errorCallback) {
+        cordova.exec(successCallback,
+                    errorCallback,
+                    'CookieMaster', 'getCookieValueByDomainPath',
+                    [domain, path, cookieName]
+        );
+    },
     setCookieValue: function (url, cookieName, cookieValue, successCallback, errorCallback) {
         cordova.exec(successCallback,
                     errorCallback,
