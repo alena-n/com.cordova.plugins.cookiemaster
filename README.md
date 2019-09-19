@@ -3,22 +3,27 @@ IMPORTANT: This plugin is no longer maintained. It is possible that some functio
 Cookie Master
 ==============
 
-As you may already know, WebViews on Android and iOS platforms do not support regular use of <code>document.cookie</code> for managing the cookies in your app. This plugin allows you to get and set cookie values from your WebView through a simple interface.
+Fork of kristianhristov/cordova-cookie-master plugin with additional method to get cookies by domain
 
 ## Supported Platforms
 * Android
 * iOS
 
-## Installing
-
-Install with Cordova CLI
-
-    $ cordova plugin add https://github.com/kristianhristov/cordova-cookie-master.git
-
 ## Usage
 ### Get cookie value
 ```javascript
 cookieMaster.getCookieValue('http://<some host>:<some port>', '<cookie name>', function(data) {
+  console.log(data.cookieValue);
+}, function(error) {
+  if (error) {
+    console.log('error: ' + error);
+  }
+});
+```
+### Get cookie value by domain and path
+You can access a cookie from a special domain. Replace `.domain.com` with a desired value.
+```javascript
+cookieMaster.getCookieValueByDomainPath('.domain.com', '/', '<cookie name>', function(data) {
   console.log(data.cookieValue);
 }, function(error) {
   if (error) {
