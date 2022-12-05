@@ -12,6 +12,7 @@ import android.util.Log;
 import java.net.HttpCookie;
 
 import android.os.Build;
+import android.webkit.ValueCallback;
 import android.webkit.CookieManager;
 
 public class CookieMaster extends CordovaPlugin {
